@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geological Analysis Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+<body>
+    {% include 'base.html' %}
+    <div class="container">
+        <h1>Geological Analysis Dashboard</h1>
+        <div id="filters">
+            <h3>Filters</h3>
+            <form id="filter-form">
+                <label for="phase">Excavation Phase:</label>
+                <select id="phase" name="phase">
+                    <option value="all">All</option>
+                    <option value="phase1">Phase 1</option>
+                    <option value="phase2">Phase 2</option>
+                </select>
+                <button type="submit">Apply Filters</button>
+            </form>
+        </div>
+        <div id="charts">
+            <h3>Data Visualizations</h3>
+            <canvas id="dataChart"></canvas>
+        </div>
+        <div id="results">
+            <h3>Analysis Results</h3>
+            <div id="results-content">
+                <!-- Results will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

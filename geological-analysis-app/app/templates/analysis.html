@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geological Analysis Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+    {% include 'base.html' %}
+    
+    <div class="container">
+        <h1>Geological Analysis Results</h1>
+        
+        <div id="visualizations">
+            <!-- Placeholder for visualizations -->
+            <h2>Visualizations</h2>
+            <div id="stereonet-plot"></div>
+            <div id="rmr-visualization"></div>
+        </div>
+        
+        <div id="data-summary">
+            <h2>Data Summary</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Measurement</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for phase, measurement, value in data_summary %}
+                    <tr>
+                        <td>{{ phase }}</td>
+                        <td>{{ measurement }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="image-analysis">
+            <h2>Image Analysis</h2>
+            <img src="{{ url_for('static', filename='uploads/' + image_filename) }}" alt="Geological Image" class="img-fluid">
+        </div>
+    </div>
+</body>
+</html>
