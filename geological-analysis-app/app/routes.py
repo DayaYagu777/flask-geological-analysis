@@ -138,10 +138,25 @@ def save_measurement():
 def get_measurements():
     # For now, return empty list. In a real app, you'd fetch from database
     return jsonify({'success': True, 'measurements': []})
-    
-@bp.route('/login')
+
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')  # You'll need to create this template
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        remember = request.form.get('remember')
+        
+        # Aquí deberías agregar tu lógica de autenticación
+        # Por ejemplo, verificar credenciales en base de datos
+        
+        # Ejemplo básico (reemplaza con tu lógica real):
+        if username == "admin" and password == "password123":
+            flash('Inicio de sesión exitoso', 'success')
+            return redirect(url_for('app.home'))
+        else:
+            flash('Credenciales incorrectas', 'error')
+    
+    return render_template('login.html')
 
 @bp.route('/analyze', methods=['POST'])
 def analyze():
