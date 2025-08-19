@@ -21,7 +21,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active text-white" href="{{ url_for('login') }}">
+                            <a class="nav-link active text-white" href="{{ url_for('app.login') }}">
                                 <i class="bi bi-person"></i> Login
                             </a>
                         </li>
@@ -55,7 +55,7 @@
                                     {% endif %}
                                 {% endwith %}
 
-                                <form method="POST" action="{{ url_for('login') }}">
+                                <form method="POST" action="{{ url_for('app.login') }}">
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Usuario</label>
                                         <input type="text" class="form-control" id="username" name="username" required>
