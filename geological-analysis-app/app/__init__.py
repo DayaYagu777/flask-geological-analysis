@@ -19,6 +19,13 @@ def create_app():
     login_manager.init_app(app)
     login_manager.login_view = 'app.home'
     
+    # User loader callback
+    from app.models import User
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+    
     from app.routes import bp as app_bp
     app.register_blueprint(app_bp)
     
