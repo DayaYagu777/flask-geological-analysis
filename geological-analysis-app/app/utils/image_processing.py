@@ -1,6 +1,17 @@
 from PIL import Image, ImageFilter, ImageDraw
 import numpy as np
-import cv2
+
+try:
+    import cv2
+    HAS_OPENCV = True
+except ImportError:
+    HAS_OPENCV = False
+
+try:
+    from scipy import ndimage
+    HAS_SCIPY = True
+except ImportError:
+    HAS_SCIPY = False
 
 def resize_image(image_path, output_path, size):
     """Resize image to specified dimensions."""
@@ -56,27 +67,41 @@ def analyze_geological_image(image_path):
         }
         
         # Enhanced analysis with OpenCV if available
-        try:
-            # Convert to grayscale for analysis
-            if len(img_array.shape) > 2:
-                gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
-            else:
-                gray = img_array
-            
-            # Edge detection for fracture analysis
-            edges = cv2.Canny(gray, 50, 150)
-            
-            # Find contours (potential geological features)
-            contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            
-            results['features'] = {
-                'edge_density': np.sum(edges > 0) / edges.size,
-                'contour_count': len(contours),
-                'mean_intensity': np.mean(gray),
-                'std_intensity': np.std(gray)
-            }
-            
-        except ImportError:
+        if HAS_OPENCV:
+            try:
+                # Convert to grayscale for analysis
+                if len(img_array.shape) > 2:
+                    gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
+                else:
+                    gray = img_array
+                
+                # Edge detection for fracture analysis
+                edges = cv2.Canny(gray, 50, 150)
+                
+                # Find contours (potential geological features)
+                contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                
+                results['features'] = {
+                    'edge_density': np.sum(edges > 0) / edges.size,
+                    'contour_count': len(contours),
+                    'mean_intensity': np.mean(gray),
+                    'std_intensity': np.std(gray)
+                }
+                
+            except Exception as e:
+                results['opencv_error'] = str(e)
+                if len(img_array.shape) > 2:
+                    gray = np.mean(img_array, axis=2)
+                else:
+                    gray = img_array
+                    
+                results['features'] = {
+                    'mean_intensity': np.mean(gray),
+                    'std_intensity': np.std(gray),
+                    'min_intensity': np.min(gray),
+                    'max_intensity': np.max(gray)
+                }
+        else:
             # Fallback analysis without OpenCV
             if len(img_array.shape) > 2:
                 gray = np.mean(img_array, axis=2)
@@ -116,11 +141,16 @@ def enhance_geological_features(image_path, enhancement_type='contrast'):
             
             if len(img_array.shape) > 2:
                 for i in range(img_array.shape[2]):
-                    from scipy import ndimage
-                    enhanced[:,:,i] = ndimage.convolve(img_array[:,:,i], kernel)
+                    if HAS_SCIPY:
+                        enhanced[:,:,i] = ndimage.convolve(img_array[:,:,i], kernel)
+                    else:
+                        # Simple edge enhancement without scipy
+                        enhanced[:,:,i] = img_array[:,:,i]  # Fallback
             else:
-                from scipy import ndimage
-                enhanced = ndimage.convolve(img_array, kernel)
+                if HAS_SCIPY:
+                    enhanced = ndimage.convolve(img_array, kernel)
+                else:
+                    enhanced = img_array  # Fallback
             
             enhanced = np.clip(enhanced, 0, 255).astype(np.uint8)
         else:
