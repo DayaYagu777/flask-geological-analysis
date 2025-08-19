@@ -11,6 +11,24 @@
     {% include 'base.html' %}
     <div class="container">
         <h1>Geological Analysis Dashboard</h1>
+        
+        <!-- Quick Access Navigation -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-rocket me-2"></i>Análisis Interactivo</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Acceda al sistema de análisis geológico interactivo con visualización de imágenes, mediciones y análisis RMR/Fracturas.</p>
+                        <a href="{{ url_for('app.geological_analysis') }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-mountain me-2"></i>Abrir Visualizador Interactivo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="filters">
             <h3>Filters</h3>
             <form id="filter-form">

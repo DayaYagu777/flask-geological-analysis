@@ -1,0 +1,393 @@
+/* Geological Analysis Professional Styling */
+
+:root {
+    --primary-color: #2c5aa0;
+    --secondary-color: #34495e;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --info-color: #3498db;
+    --light-bg: #f8f9fa;
+    --dark-bg: #343a40;
+    --border-color: #dee2e6;
+    --text-muted: #6c757d;
+    --shadow: 0 2px 8px rgba(0,0,0,0.1);
+    --transition: all 0.3s ease;
+}
+
+/* Global Styles */
+body {
+    background-color: var(--light-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container-fluid {
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Styles */
+.row.bg-dark {
+    flex-shrink: 0;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+}
+
+/* Control Panel */
+.control-panel {
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+.control-panel .card {
+    border: none;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    margin-bottom: 1rem;
+}
+
+.control-panel .card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.control-panel .card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 8px 12px;
+}
+
+.control-panel .card-header h6 {
+    font-weight: 600;
+    margin: 0;
+}
+
+.control-panel .card-body {
+    padding: 12px;
+}
+
+/* Form Controls */
+.form-control, .form-select {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(44, 90, 160, 0.25);
+}
+
+.form-control-sm, .form-select-sm {
+    font-size: 0.8rem;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 4px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), #3d6db0);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #234a87, var(--primary-color));
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-success:hover {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.btn-outline-info:hover {
+    background-color: var(--info-color);
+    border-color: var(--info-color);
+}
+
+/* Analysis Mode Toggle */
+.btn-check:checked + .btn-outline-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: white;
+}
+
+.btn-check:checked + .btn-outline-info {
+    background-color: var(--info-color);
+    border-color: var(--info-color);
+    color: white;
+}
+
+/* Image Container */
+.image-container {
+    position: relative;
+    height: calc(100vh - 120px);
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#geologicalCanvas {
+    max-width: 100%;
+    max-height: 100%;
+    cursor: crosshair;
+    border: none;
+    background: #f8f9fa;
+}
+
+.canvas-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(248, 249, 250, 0.9);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.canvas-overlay.hidden {
+    display: none;
+}
+
+.instruction-text {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    padding: 20px;
+    max-width: 400px;
+}
+
+/* Canvas Controls */
+.canvas-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 100;
+}
+
+.canvas-controls .btn {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--border-color);
+}
+
+.canvas-controls .btn:hover {
+    background: white;
+    transform: scale(1.05);
+}
+
+/* Status Bar */
+.status-bar {
+    flex-shrink: 0;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Legend */
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+/* Loading Spinner */
+.spinner-border {
+    margin-bottom: 15px;
+}
+
+/* Measurements Panel */
+#measurementsPanel .card {
+    border-top: none;
+    border-radius: 0;
+}
+
+.table-sm th,
+.table-sm td {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slide-in-right {
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Tooltip Styles */
+.tooltip-custom {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* Modal Enhancements */
+.modal-content {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.modal-header.bg-danger {
+    border-bottom: none;
+}
+
+/* Scale Information */
+.scale-info {
+    padding: 8px;
+    background: #f1f3f4;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container-fluid {
+        height: auto;
+    }
+    
+    .control-panel {
+        height: auto;
+        max-height: 50vh;
+    }
+    
+    .image-container {
+        height: 50vh;
+    }
+    
+    .canvas-controls {
+        position: static;
+        flex-direction: row;
+        margin: 10px 0;
+        justify-content: center;
+    }
+    
+    .control-panel .card-body {
+        padding: 8px;
+    }
+    
+    .status-bar {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn-group-vertical .btn {
+        font-size: 0.8rem;
+        padding: 0.375rem 0.5rem;
+    }
+    
+    .form-control-sm, .form-select-sm {
+        font-size: 0.75rem;
+    }
+    
+    .legend-item {
+        font-size: 0.75rem;
+    }
+    
+    .instruction-text {
+        font-size: 1rem;
+        padding: 15px;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .control-panel .card {
+        border: 2px solid var(--border-color);
+    }
+    
+    .form-control, .form-select {
+        border: 2px solid var(--border-color);
+    }
+    
+    .legend-color {
+        border: 2px solid #000;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --light-bg: #1a1a1a;
+        --border-color: #404040;
+        --text-muted: #b0b0b0;
+    }
+    
+    .image-container {
+        background: #2a2a2a;
+    }
+    
+    #geologicalCanvas {
+        background: #2a2a2a;
+    }
+    
+    .canvas-overlay {
+        background: rgba(42, 42, 42, 0.9);
+    }
+    
+    .canvas-controls .btn {
+        background: rgba(42, 42, 42, 0.9);
+        color: white;
+    }
+}
