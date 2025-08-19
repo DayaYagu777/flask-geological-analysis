@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify, render_template, send_from_directory, current_app, flash, redirect, url_for
+from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 import os
 import json
 from app.utils.image_processing import analyze_geological_image, image_to_array
 from app.utils.data_analysis import load_excel_data, filter_geological_data, analyze_rmr_data, analyze_fracture_data
+from app.models import get_user_by_username
 
 bp = Blueprint('app', __name__)
 
@@ -144,19 +146,26 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        remember = request.form.get('remember')
+        remember = bool(request.form.get('remember'))
         
-        # Aquí deberías agregar tu lógica de autenticación
-        # Por ejemplo, verificar credenciales en base de datos
+        # Find user by username
+        user = get_user_by_username(username)
         
-        # Ejemplo básico (reemplaza con tu lógica real):
-        if username == "admin" and password == "password123":
+        if user and user.check_password(password):
+            login_user(user, remember=remember)
             flash('Inicio de sesión exitoso', 'success')
             return redirect(url_for('app.home'))
         else:
             flash('Credenciales incorrectas', 'error')
     
     return render_template('login.html')
+
+@bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Has cerrado sesión exitosamente', 'success')
+    return redirect(url_for('app.home'))
 
 @bp.route('/analyze', methods=['POST'])
 def analyze():
