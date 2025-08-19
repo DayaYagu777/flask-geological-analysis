@@ -27,18 +27,7 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                {% if current_user.is_authenticated %}
-                <li class="nav-item">
-                    <span class="navbar-text">Bienvenido, {{ current_user.username }}</span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('app.logout') }}">Logout</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('app.login') }}">Login</a>
-                </li>
-                {% endif %}
+                <!-- No authentication needed - removed login/logout links -->
             </ul>
         </div>
     </nav>

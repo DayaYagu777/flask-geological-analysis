@@ -1,10 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 import os
 
 db = SQLAlchemy()
-login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
@@ -16,15 +14,6 @@ def create_app():
         os.makedirs(upload_dir)
     
     db.init_app(app)
-    login_manager.init_app(app)
-    login_manager.login_view = 'app.login'
-    
-    # User loader callback
-    from app.models import get_user
-    
-    @login_manager.user_loader
-    def load_user(user_id):
-        return get_user(user_id)
     
     from app.routes import bp as app_bp
     app.register_blueprint(app_bp)

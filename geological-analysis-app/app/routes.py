@@ -1,11 +1,9 @@
 from flask import Blueprint, request, jsonify, render_template, send_from_directory, current_app, flash, redirect, url_for
-from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 import os
 import json
 from app.utils.image_processing import analyze_geological_image, image_to_array
 from app.utils.data_analysis import load_excel_data, filter_geological_data, analyze_rmr_data, analyze_fracture_data
-from app.models import get_user_by_username
 
 bp = Blueprint('app', __name__)
 
@@ -140,32 +138,6 @@ def save_measurement():
 def get_measurements():
     # For now, return empty list. In a real app, you'd fetch from database
     return jsonify({'success': True, 'measurements': []})
-
-@bp.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        remember = bool(request.form.get('remember'))
-        
-        # Find user by username
-        user = get_user_by_username(username)
-        
-        if user and user.check_password(password):
-            login_user(user, remember=remember)
-            flash('Inicio de sesión exitoso', 'success')
-            return redirect(url_for('app.home'))
-        else:
-            flash('Credenciales incorrectas', 'error')
-    
-    return render_template('login.html')
-
-@bp.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('Has cerrado sesión exitosamente', 'success')
-    return redirect(url_for('app.home'))
 
 @bp.route('/analyze', methods=['POST'])
 def analyze():
