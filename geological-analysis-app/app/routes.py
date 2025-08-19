@@ -138,6 +138,10 @@ def save_measurement():
 def get_measurements():
     # For now, return empty list. In a real app, you'd fetch from database
     return jsonify({'success': True, 'measurements': []})
+    
+@bp.route('/login')
+def login():
+    return render_template('login.html')  # You'll need to create this template
 
 @bp.route('/analyze', methods=['POST'])
 def analyze():
