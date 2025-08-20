@@ -1,6 +1,7 @@
-from app import create_app
+from app import create_app, run_hybrid_server
 
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Run with enhanced capabilities
+    run_hybrid_server(debug=True)
